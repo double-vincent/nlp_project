@@ -66,7 +66,7 @@ ___
 
 You will need your own env.py file with database credentials then follow the steps below:
 
-  - Download the csv files, allplayers_wrangle.py, model.py, explore.py, and final_report.ipynb files
+  - Download the csv files, wrangle.py, model.py, explore.py, and final_report.ipynb files
   - Run the final_report.ipynb notebook
 
 [[Back to top](#top)]
@@ -75,10 +75,12 @@ You will need your own env.py file with database credentials then follow the ste
 ## <a name="pipeline"></a>Pipeline Conclusions and Takeaways:
 
 ###  Wrangling Takeaways
-- Performed initial web scrapping to pull all text content from README
-- Used github language identification for labeling
+- Performed initial web scrapping to pull in top 100 repositories after searching for `baskteball`
+- Performed additional scrapping to separate all text content from README
+- Used github language identification for labeling of coding language
 - Following the Data Acquisition the following preparation work was done to the acquired data:
-    - 
+    - Eliminated non-English language README files --> backport to acquire function
+    - Tokenined, Lemmatized, and Cleaned text portion of files
 
 ### Exploration Summary
 
