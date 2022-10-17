@@ -35,16 +35,17 @@ ___
 ## <a name="planning"></a>Planning:
 
 - Create README.md with data dictionary, project goals, and come up with initial hypotheses.
-- Acquire data from single repository as test.
-- 
-- Clean and prepare data for the first iteration through the pipeline, MVP preparation. Create a function to automate the process. 
+- Acquire data from single repository as test. After succesful test, decide on 100 repositories to analyze.
+- Clean and prepare data for the first iteration through the pipeline, MVP preparation. Create a functions to automate the process. 
 - Store the acquisition and preparation functions in a wrangle.py module function, and prepare data in Final Report Notebook by importing and using the function.
 - Clearly define at least two hypotheses, set an alpha, run the statistical tests needed, reject or fail to reject the Null Hypothesis, and document findings and takeaways.
 - Establish a baseline accuracy and document well.
-- Train at least 3 different regression models.
+- Train at least 3 different classification models.
 - Evaluate models on train and validate datasets.
 - Choose the model that performs the best and evaluate that single model on the test dataset.
 - Document conclusions, takeaways, and next steps in the Final Report Notebook.
+- Prepare slideshow and recorded presentation for classmate and faculty consumption
+  - Slide deck available *here <insert URL to slide deck>*
 
 [[Back to top](#top)]
 
@@ -74,7 +75,8 @@ You will need your own env.py file with database credentials then follow the ste
 ## <a name="pipeline"></a>Pipeline Conclusions and Takeaways:
 
 ###  Wrangling Takeaways
--  
+- Performed initial web scrapping to pull all text content from README
+- Used github language identification for labeling
 - Following the Data Acquisition the following preparation work was done to the acquired data:
     - 
 
