@@ -27,28 +27,28 @@ def spotlight_stats(df, feature, title, phase=None):
     ---
     '''
 
-    multi_col = pd.MultiIndex.from_tuples([('population_proportions', 'actual_language'), 
-                                    ('population_proportions', 'actual_language'),
+    multi_col = pd.MultiIndex.from_tuples([('population_proportions', 'language'), 
+                                    ('population_proportions', 'language'),
                                     ('population_proportions', 'change')])
     
     # dataframe, 3 columns, 
     prop_df = pd.DataFrame(columns=multi_col)
-    prop_df['unemployment_rate'] = round(1 - df.groupby(by=feature).actual_language.mean().sort_values(ascending=True), 2)
+    prop_df['unemployment_rate'] = round(1 - df.groupby(by=feature).language.mean().sort_values(ascending=True), 2)
 
     # show the proportion of the population that each industry is
-    actual_language_pop_proportion = df[df.actual_language == 1][feature].value_counts(normalize=True) 
+    language_pop_proportion = df[df.language == 1][feature].value_counts(normalize=True) 
 
     # show the proportion of the population that each industry is
-    actual_language_pop_proportion = df[df.actual_language == 0][feature].value_counts(normalize=True) 
+    language_pop_proportion = df[df.language == 0][feature].value_counts(normalize=True) 
     
     #assign proper values to dframe
-    prop_df[('population_proportions', 'actual_language')] = actual_language_pop_proportion
-    prop_df[('population_proportions', 'actual_language')] = actual_language_pop_proportion
-    prop_df[('population_proportions', 'change')] = actual_language_pop_proportion - actual_language_pop_proportion
+    prop_df[('population_proportions', 'language')] = language_pop_proportion
+    prop_df[('population_proportions', 'language')] = language_pop_proportion
+    prop_df[('population_proportions', 'change')] = language_pop_proportion - language_pop_proportion
 
     #chi2 testing and outcome printing
     alpha = .05
-    crosstab = pd.crosstab(df[feature], df["actual_language"])
+    crosstab = pd.crosstab(df[feature], df["language"])
 
     chi2, p, dof, expected = chi2_contingency(crosstab)
 
@@ -68,9 +68,9 @@ def spotlight_stats(df, feature, title, phase=None):
     else: 
         print('Fail to reject null hypothesis')
 
-    #plots the distributions of the feature in separate columns for actual_language vs actual_language
+    #plots the distributions of the feature in separate columns for language vs language
     plt.figure(figsize=(20,6))
-    sns.catplot(data=df, x=feature, col='actual_language', kind='count', sharey=False)
+    sns.catplot(data=df, x=feature, col='language', kind='count', sharey=False)
     plt.suptitle(title, y=1.02)
     plt.show()
 
@@ -94,8 +94,8 @@ def split_scale(df):
     ---
     '''
     #train_test_split
-    train_validate, test = train_test_split(df, test_size=.2, random_state=514, stratify=df['actual_language'])
-    train, validate = train_test_split(train_validate, test_size=.3, random_state=514, stratify=train_validate['actual_language'])
+    train_validate, test = train_test_split(df, test_size=.2, random_state=514, stratify=df['language'])
+    train, validate = train_test_split(train_validate, test_size=.3, random_state=514, stratify=train_validate['language'])
     
     #create scaler object
     scaler = MinMaxScaler()
@@ -139,14 +139,14 @@ def split_X_y(train, validate, test):
     ---
     '''
     # split data into Big X, small y sets 
-    X_train = train.drop(columns=['actual_language'])
-    y_train = train.actual_language
+    X_train = train.drop(columns=['language'])
+    y_train = train.language
 
-    X_validate = validate.drop(columns=['actual_language'])
-    y_validate = validate.actual_language
+    X_validate = validate.drop(columns=['language'])
+    y_validate = validate.language
 
-    X_test = test.drop(columns=['actual_language'])
-    y_test = test.actual_language
+    X_test = test.drop(columns=['language'])
+    y_test = test.language
 
     return X_train, y_train, X_validate, y_validate, X_test, y_test
 
