@@ -1,0 +1,8 @@
+env.py
+__*
+.ipynb_checkpoints/
+lsn*
+*.csv
+.DS_Store
+*.txt
+nts*
