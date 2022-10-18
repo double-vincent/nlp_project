@@ -390,6 +390,7 @@ def prep_text(df):
     """
     df = df.dropna()
     df = df.drop([4, 13, 66, 86])
+    df = df.drop(columns='Unnamed: 0')
 
     df['clean'] = df.readme_txt.apply(clean)
     df['stemmed'] = df.clean.apply(stem)
