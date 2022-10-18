@@ -441,9 +441,9 @@ def remove_stopwords(text, extra_words=None, exclude_words=None):
 
     filtered_words = [w for w in words if w not in stopwords_list]
 
-    print()
-    print('Removed {} stopwords'.format(len(words) - len(filtered_words)))
-    print('---')
+    # print()
+    # print('Removed {} stopwords'.format(len(words) - len(filtered_words)))
+    # print('---')
 
     text = ' '.join(filtered_words)
 
@@ -503,5 +503,9 @@ def prep_text(df):
     df['clean'] = df.readme_txt.apply(clean)
     df['stemmed'] = df.clean.apply(stem)
     df['lemmatized'] = df.clean.apply(lemmatize)
+
+    df = df[['language', 'lemmatized']]
+    for i in df.index:
+        df.loc[i, 'word_count'] = len([word for word in df.loc[i, 'lemmatized'].split()])
 
     return df
