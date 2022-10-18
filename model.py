@@ -177,7 +177,7 @@ def create_description_chart(y_train):
     ---
     '''
     # formulate baseline accuracy
-    baseline_accuracy = (y_train == 1).mean()
+    baseline_accuracy = (y_train ==  'Python').mean()
 
     descriptions = pd.DataFrame({'Model': 'Baseline', \
                                 'Accuracy(Score)': baseline_accuracy,

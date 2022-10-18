@@ -377,6 +377,15 @@ def clean(text, extra_words=None, exclude_words=None):
 
     return text
 
+def flatten_languages(language):
+
+    keepers = ['Python', 'R', 'JavaScript', 'Jupyter Notebook', 'HTML']
+    
+    if language not in keepers:
+        language = 'Other'
+
+    return language
+
 def prep_text(df):
     """ 
     Purpose:
@@ -388,9 +397,13 @@ def prep_text(df):
     Returns:
     
     """
+
+
     df = df.dropna()
     df = df.drop([4, 13, 66, 86])
     df = df.drop(columns='Unnamed: 0')
+    
+    df.language = df.language.apply(flatten_languages)
 
     df['clean'] = df.readme_txt.apply(clean)
     df['stemmed'] = df.clean.apply(stem)

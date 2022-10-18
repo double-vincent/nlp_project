@@ -84,9 +84,12 @@ You will need your own env.py file with database credentials then follow the ste
 
 ### Exploration Summary
 
-- 
+- Created Class to hold words, bigrams, and trigrams for each langauge
 
-- 
+- dont forget to grab message lenght as a category
+
+- May be worth it to decide if a word is a basketball word or coding word
+  - cna them assign them negative or psoitive values and 
 
 ## Modeling takeaways
 
