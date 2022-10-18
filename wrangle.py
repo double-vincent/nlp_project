@@ -495,7 +495,7 @@ def prep_text(df):
     df = df.rename(columns= {'readme_contents' : 'readme_txt'})
     df['readme_txt'] = df['readme_txt'].str.replace(r'<[^<>]*>', '', regex=True)
     df = df.dropna()
-    df.drop([1, 4, 6, 13, 20, 66, 86, 113, 123, 184, 204])
+    df = df.drop([1, 4, 6, 13, 20, 66, 86, 113, 123, 184, 204])
     df = df.drop(columns='Unnamed: 0')
     
     df.language = df.language.apply(flatten_languages)
