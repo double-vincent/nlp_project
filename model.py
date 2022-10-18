@@ -12,6 +12,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.linear_model import LogisticRegression
 
+
+from pprint import pprint
+
 def spotlight_stats(df, feature, title, phase=None):
     ''' 
     Purpose:
@@ -219,12 +222,9 @@ def get_features():
         feature_sets: group of features for use in modeling
     ---
     '''
-    feat_set1 = ['industry', 'occupation', 'country_region', 'metro_area_size' , 'professional_certification', 'own_bus_or_farm','education']
-    feat_set2 = ['household_num', 'children_in_household', 'education', 'enrolled_in_school', 'family_income', 'marital_status']
-    feat_set3 = ['age', 'is_male', 'veteran', 'hispanic_non', 'race', 'birth_country', 'mother_birth_country', 'father_birth_country', 'citizenship', 'education']
-    feat_set4 = ['age', 'industry', 'occupation','professional_certification','education','marital_status','is_male','citizenship']
+    feat_set1 = ['word_count', 'lemmatized']
 
-    feature_sets = [feat_set1, feat_set2, feat_set3, feat_set4]
+    feature_sets = [feat_set1]
 
     return feature_sets
 
@@ -247,6 +247,8 @@ def compute_metrics(model, X_df, y_df):
 
     #create confusion matrix
     confusion = confusion_matrix(y_df, y_pred)
+    #confusionb = classification_report(y_df, y_pred)
+    #pprint(confusionb)
 
     #assign results of confusion matrix to variables
     true_negative = confusion[0,0]
@@ -255,25 +257,31 @@ def compute_metrics(model, X_df, y_df):
     true_positive = confusion[1,1]
 
     #accuracy
-    accuracy = (true_positive + true_negative) / (true_positive + true_negative + false_positive + false_negative)
+    accuracy = (true_positive + true_negative) / (true_positive + true_negative + false_positive + false_negative + .0000001)
 
     #true positive rate / recall
-    recall = true_positive / (true_positive +false_negative)
+    recall = true_positive / (true_positive +false_negative +.00000000001)
 
-    #false positive rate
-    false_positive_rate = false_positive / (true_negative + false_positive)
+        # false positive rate
+    try: 
+        false_positive_rate = false_positive / (true_negative + false_positive + .0000001 )
+    except RuntimeWarning:
+        print(true_negative, false_positive)
 
     #true negative rate
-    true_negative_rate = true_negative / (true_negative + false_positive)
+    try:
+        true_negative_rate = true_negative / (true_negative + false_positive + .0000001)
+    except RuntimeWarning:
+        print(true_negative, false_positive)
 
     #false negative rate
-    false_negative_rate = false_negative / (false_negative + true_positive)
+    false_negative_rate = false_negative / (false_negative + true_positive + .000000001) 
 
     #precision
-    precision = true_positive / (true_positive + false_positive)
+    precision = true_positive / (true_positive + false_positive + .00000001)
 
     #f1-score
-    f1_score = 2 * (precision * recall) / (precision + recall)
+    f1_score = 2 * (precision * recall) / (precision + recall + .00000001)
 
     #support
     support_positive = true_positive + false_negative
@@ -544,143 +552,6 @@ def train_models(y, feature_groups, subsets):
             
     return train_descriptions, train_metrics
 
-
-def score_on_validation(descriptions, subsets):
-    ''' 
-    Purpose:
-        To score models on the validation subset
-    ---
-    Parameters:
-        descriptions: descriptions of the best performing model from training phase
-        subsets: necessary data subsets for use with modeling
-    ---
-    Output:
-        val_descriptions: model descriptions for models used on the validation subset
-        validate_metrics: evaluation metrics for validation predictions
-    ---
-    '''    
-    X_train=subsets[1]
-    y_train=subsets[2]
-    X_validate= subsets[3]
-    y_validate = subsets[4]
-    
-    validate_metrics = create_comp_chart()
-    val_descriptions = create_description_chart(y_validate)
-    
-    #feat_set = descriptions.iloc[1]['Features Used'].strip('\[]\'').split('\', \'')
-    for idx in descriptions.index:
-
-        model_id = descriptions.loc[idx]['Model']
-        feat_set = descriptions.loc[idx]['Features Used'].strip('\[]\'').split('\', \'')
-        selectors = get_selectors(descriptions.loc[idx]['Parameters'])
-
-        features = []
-
-        for feature in feat_set:
-            features += [col for col in X_validate.columns if feature in col]
-
-        if model_id.startswith('DTC'):
-            val_model = DecisionTreeClassifier(max_depth=int(selectors[0]),\
-                                                random_state=514)
-        elif model_id.startswith('RF'):
-            val_model = RandomForestClassifier(max_depth=int(selectors[0]),\
-                                            min_samples_leaf=int(selectors[1]),
-                                            random_state=514)
-        elif model_id.startswith('Knn'):
-            val_model = KNeighborsClassifier(n_neighbors = int(selectors[0]))
-        elif model_id.startswith('LR'):
-            val_model = LogisticRegression(C=float(selectors[0]),\
-                                            solver=selectors[1],
-                                            class_weight=selectors[2],
-                                            max_iter=200,
-                                            random_state=514)  
-                                    
-        val_model.fit(X_train[features], y_train)
-        validate_metrics[model_id] = compute_metrics(val_model, X_validate[features], y_validate).values
-
-        score = val_model.score(X_validate[features], y_validate).round(4)
-
-        val_descriptions.loc[idx+1] = {'Model': model_id,
-            'Accuracy(Score)': score,
-            'Type': descriptions.loc[idx]['Type'],
-            'Features Used': f'{feat_set}',
-            'Parameters': descriptions.loc[idx]['Parameters']
-        }
-        
-    val_descriptions.insert(loc=2, column='Sensitivity', value=0)
-
-    for idx in val_descriptions.index:
-        model_id = val_descriptions.loc[idx]['Model']
-        if model_id != 'Baseline':
-            val_descriptions.loc[idx, 'Sensitivity'] = validate_metrics.T.loc[model_id]['True Negative Rate']        
-
-
-    return val_descriptions, validate_metrics
-
-def score_on_test(descriptions, subsets):
-    ''' 
-    Purpose:
-        To score a model on the test subset
-    ---
-    Parameters:
-        descriptions: descriptions of the best performing model from validation phase
-        subsets: necessary data subsets for use with modeling
-    ---
-    Output:
-        test_descriptions: model description for model used on test set
-        test_metrics: evaluation metrics for test predictions
-    ---
-    '''    
-    X_train=subsets[1]
-    y_train=subsets[2]
-    X_test = subsets[5]
-    y_test = subsets[6]
-
-    test_metrics = create_comp_chart()
-    test_descriptions = create_description_chart(y_test)
-        
-    for idx in descriptions.index:
-        
-        model_id = descriptions.loc[idx]['Model']
-        feat_set = descriptions.loc[idx]['Features Used'].strip('\[]\'').split('\', \'')
-        selectors = get_selectors(descriptions.loc[idx]['Parameters'])
-
-        features = []
-
-        for feature in feat_set:
-            features += [col for col in X_test.columns if feature in col]
-
-        if model_id.startswith('DTC'):
-            test_model = DecisionTreeClassifier(max_depth=int(selectors[0]),\
-                                                random_state=514)
-        elif model_id.startswith('RF'):
-            test_model = RandomForestClassifier(max_depth=int(selectors[0]),\
-                                            min_samples_leaf=int(selectors[1]),
-                                            random_state=514)
-        elif model_id.startswith('Knn'):
-            test_model = KNeighborsClassifier(n_neighbors = int(selectors[0]))
-        elif model_id.startswith('LR'):
-            test_model = LogisticRegression(C=float(selectors[0]),\
-                                            solver=selectors[1],
-                                            class_weight=selectors[2],
-                                            max_iter=200,
-                                            random_state=514)  
-                                    
-        test_model.fit(X_train[features], y_train)
-
-        test_metrics[model_id] = compute_metrics(test_model, X_test[features], y_test).values
-
-        score = test_model.score(X_test[features], y_test).round(4)
-
-        test_descriptions.loc[idx+1] = {'Model': model_id,
-            'Accuracy(Score)': score,
-            'Type': descriptions.loc[idx]['Type'],
-            'Features Used': f'{feat_set}',
-            'Parameters': descriptions.loc[idx]['Parameters']
-        }
-
-    return test_descriptions, test_metrics
-
 def for_final_report(train, validate, test, feature_bank):
     ''' 
     Purpose:
@@ -697,30 +568,5 @@ def for_final_report(train, validate, test, feature_bank):
     ---
     '''    
 
-    X_train, y_train, X_validate, y_validate, X_test, y_test = split_X_y(train, validate, test)
 
-    subsets=[train, X_train, y_train, X_validate, y_validate, X_test, y_test]
-
-    train_descriptions, train_metrics = train_models(y_train, feature_bank, subsets)
-
-    top_10 = train_descriptions[train_descriptions['Accuracy(Score)'] > .68].\
-        sort_values('Sensitivity', ascending=False).\
-        head(10)
-
-    # top_4 = train_descriptions[train_descriptions['Accuracy(Score)'] > .60].\
-    #     sort_values('Sensitivity', ascending=False).\
-    #     head(4)
-
-    val_descriptions, validate_metrics = score_on_validation(top_10, subsets)
-
-    top_4 = val_descriptions[(val_descriptions.Sensitivity > .30) & (val_descriptions['Accuracy(Score)'] > .60)].\
-        sort_values('Sensitivity', ascending=False).\
-        head(4)
-
-    top_1 = val_descriptions[(val_descriptions.Sensitivity > .30) & (val_descriptions['Accuracy(Score)'] > .60)].\
-        sort_values('Sensitivity', ascending=False).\
-        head(1)
-
-    test_descriptions, test_metrics = score_on_test(top_1, subsets)
-
-    return test_metrics, top_4
+    return 
