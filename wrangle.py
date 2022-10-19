@@ -4,6 +4,7 @@ import pandas as pd
 import re
 import os
 import json
+import nltk
 from typing import Dict, List, Optional, Union, cast
 import requests
 from env import github_token, github_username
@@ -441,7 +442,9 @@ def prep_text(df):
     df = df.replace("'", '', regex=True)
     for i in df.index:
         df.loc[i, 'word_count'] = len([word for word in df.loc[i, 'lemmatized'].split()])
-
+    df.language = df.language.str.lower()
+    df['language_bigrams'] = df.language
+    
     return df
 
 #created class in order to facilitate bigram and trigram creation

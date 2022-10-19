@@ -11,137 +11,34 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn import preprocessing
+import nltk
 
+def vectorize_split(df):
 
-from pprint import pprint
-
-def spotlight_stats(df, feature, title, phase=None):
-    ''' 
+    """ 
     Purpose:
-        To create visuals and print statistics for the feature of the data set
+        
     ---
     Parameters:
-        df: dataframe containing features
-        feature: the feature (column) to be used for testing and visualization
-        phase: the phase of the pipeline for which the output is needed
+        
     ---
-    Output:
-        prop_df: dataframe that contains population proportions and unemployment rate
-    ---
-    '''
+    Returns:
+        X_train, y_train, X_validate, y_validate, X_test, y_test: data subsets
+    """
 
-    multi_col = pd.MultiIndex.from_tuples([('population_proportions', 'language'), 
-                                    ('population_proportions', 'language'),
-                                    ('population_proportions', 'change')])
-    
-    # dataframe, 3 columns, 
-    prop_df = pd.DataFrame(columns=multi_col)
-    prop_df['unemployment_rate'] = round(1 - df.groupby(by=feature).language.mean().sort_values(ascending=True), 2)
+    tfidf = TfidfVectorizer()
+    df['lemmatized'] = tfidf.fit_transform(df.lemmatized).todense()
+    df['language_bigrams']= tfidf.fit_transform(df.language_bigrams).todense()
 
-    # show the proportion of the population that each industry is
-    language_pop_proportion = df[df.language == 1][feature].value_counts(normalize=True) 
+    scaler = preprocessing.MinMaxScaler()
+    scaler.fit_transform(df[['word_count']])
 
-    # show the proportion of the population that each industry is
-    language_pop_proportion = df[df.language == 0][feature].value_counts(normalize=True) 
-    
-    #assign proper values to dframe
-    prop_df[('population_proportions', 'language')] = language_pop_proportion
-    prop_df[('population_proportions', 'language')] = language_pop_proportion
-    prop_df[('population_proportions', 'change')] = language_pop_proportion - language_pop_proportion
-
-    #chi2 testing and outcome printing
-    alpha = .05
-    crosstab = pd.crosstab(df[feature], df["language"])
-
-    chi2, p, dof, expected = chi2_contingency(crosstab)
-
-    if phase == 'explore':
-        print('Crosstab\n')
-        print(crosstab.values)
-        print('---\nExpected\n')
-        print(f'{expected.astype(int)}')
-        print('---\n')
-
-    print(f'chi^2: {chi2:.4f}')
-    print(f'p: {p:.4f}')
-    print(f'degrees of freedom: {dof}')
-
-    if p < alpha :
-        print('Reject null hypothesis')
-    else: 
-        print('Fail to reject null hypothesis')
-
-    #plots the distributions of the feature in separate columns for language vs language
-    plt.figure(figsize=(20,6))
-    sns.catplot(data=df, x=feature, col='language', kind='count', sharey=False)
-    plt.suptitle(title, y=1.02)
-    plt.show()
-
-    return round(prop_df, 3)
-
-def split_scale(df):   
-    ''' 
-    Purpose:
-        To split and scale the input dataframe
-    ---
-    Parameters:
-        df: a tidy dataframe
-    ---
-    Output:
-        train: unscaled subset of dataframe for exploration and model training
-        validate: unscaled and unseen data for model testing
-        test: unscaled and unseen data for final model test
-        train_scaled: scaled subset of dataframe for exploration and model training
-        validate_scaled: scaled and unseen data for model testing
-        test_scaled: scaled and unseen data for model testing
-    ---
-    '''
-    #train_test_split
-    train_validate, test = train_test_split(df, test_size=.2, random_state=514, stratify=df['language'])
+    train_validate, test = train_test_split(df, test_size=.3, random_state=514, stratify=df['language'])
     train, validate = train_test_split(train_validate, test_size=.3, random_state=514, stratify=train_validate['language'])
-    
-    #create scaler object
-    scaler = MinMaxScaler()
 
-    # create copies to hold scaled data
-    train_scaled = train.copy(deep=True)
-    validate_scaled = validate.copy(deep=True)
-    test_scaled =  test.copy(deep=True)
-
-    #create list of numeric columns for scaling
-    num_cols = train.select_dtypes(include='number')
-
-    #fit to data
-    scaler.fit(num_cols)
-
-    # apply
-    train_scaled[num_cols.columns] = scaler.transform(train[num_cols.columns])
-    validate_scaled[num_cols.columns] =  scaler.transform(validate[num_cols.columns])
-    test_scaled =  scaler.transform(test[num_cols.columns])
-
-    return train, validate, test, train_scaled, validate_scaled, test_scaled
-
-def split_X_y(train, validate, test):
-    ''' 
-    Purpose:
-    ---
-        To split the subsets further for modeling and testing
-    ---
-    Parameters:
-        train: unscaled subset of dataframe for exploration and model training
-        validate: unscaled and unseen data for model testing
-        test: unscaled and unseen data for final model test
-    ---
-    Output:
-        X_train: features to fit model and make predictions
-        y_train: target variable outcome for model evaluation
-        X_validate: features to make predictions
-        y_validate: target variable outcome for model evaluation
-        X_test: features to make predictions
-        y_test: target variable outcome for model evaluation
-    ---
-    '''
-    # split data into Big X, small y sets 
+     # split data into Big X, small y sets 
     X_train = train.drop(columns=['language'])
     y_train = train.language
 
@@ -151,7 +48,7 @@ def split_X_y(train, validate, test):
     X_test = test.drop(columns=['language'])
     y_test = test.language
 
-    return X_train, y_train, X_validate, y_validate, X_test, y_test
+    return train, X_train, y_train, X_validate, y_validate, X_test, y_test
 
 def create_comp_chart():
     """
@@ -552,21 +449,96 @@ def train_models(y, feature_groups, subsets):
             
     return train_descriptions, train_metrics
 
-def for_final_report(train, validate, test, feature_bank):
-    ''' 
+
+
+def test_dtc(feat_set,\
+        model_descriptions,
+        comparison_chart,
+        subsets):
+    
+    train=subsets[0]
+    X_train=subsets[1]
+    y_train=subsets[2]
+    X_test=subsets[5]
+    y_test=subsets[6]
+
+    features = []
+    for feature in feat_set:
+        features += [col for col in train.columns if feature in col]
+
+    selectors = list(product(np.arange(5,6,1)))
+
+    for idx, item in enumerate(selectors):
+        model_id = 'DTC_'+f'{idx}'
+        dtc = DecisionTreeClassifier(max_depth=item[0],\
+                                            random_state=514)
+        
+        dtc.fit(X_train[features], y_train)
+
+        comparison_chart[model_id] = compute_metrics(dtc, X_test[features], y_test).values
+
+        score = dtc.score(X_test[features], y_test).round(4)
+
+        description = pd.DataFrame({'Model': model_id,
+                                    'Accuracy(Score)': score,
+                                    'Type': 'Decision Tree Classifier',
+                                    'Features Used': f'{feat_set}',
+                                    'Parameters': f'Depth: {item[0]}'},
+                                    index=[0])
+
+        model_descriptions = pd.concat([model_descriptions, description], ignore_index=True)
+
+    return model_descriptions, comparison_chart
+
+#created class in order to facilitate bigram and trigram creation
+class code_language:
+  def __init__(self, words, label:str):
+    self.words = words
+    self.label = label
+    self.unique_to_language = set()
+
+  def whole_words(self): 
+    return pd.Series(self.words.split())
+
+  def word_counts(self):
+    return pd.Series(self.words.split()).value_counts()
+
+  def unique_words(self):
+    return set(pd.Series(self.whole_words().unique()))
+
+  def bigrams(self):
+    return pd.Series(list(nltk.bigrams(self.words.split())))
+
+  def trigrams(self):
+    return pd.Series(list(nltk.ngrams(self.words.split(), 3)))
+
+  def readme_count(self):
+    return df[df.language == self.label].word_count.count()
+
+
+
+def get_test_score(df, subsets):
+    """ 
     Purpose:
-        To create and train models for scoring on the train, validate, and test subsets
+        
     ---
     Parameters:
-        train: subset of data for model training purposes
-        validate: subset of data for model validation purposes
-        test: subset of data for model testing purposes
-        feature_bank: list contain the combinations of features for use with modeling
+        
     ---
-    Output:
-        test_metrics: evaluation metrics for test predictions
-    ---
-    '''    
+    Returns:
+    
+    """
 
+    test_description = pd.DataFrame({'Model': 'Baseline', \
+    'Accuracy(Score)': 0.402299,
+    'Type': 'Basic Baseline',
+    'Features Used': 'Baseline Prediction',
+    'Parameters': 'n/a'
+    }, index=[0])
+    feat_set = ['word_count', 'lemmatized', 'language_bigrams']
 
-    return 
+    test_comparisons = create_comp_chart()
+
+    test_description, test_comparisons = test_dtc(feat_set, test_description, test_comparisons, subsets)
+
+    return test_description
