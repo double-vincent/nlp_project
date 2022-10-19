@@ -7,6 +7,9 @@ import json
 from typing import Dict, List, Optional, Union, cast
 import requests
 from env import github_token, github_username
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
 
 from nltk.tokenize.toktok import ToktokTokenizer
 from nltk import PorterStemmer
@@ -478,3 +481,43 @@ def bigram_placement(language):
     else:
         language = other_.bigrams()
     return ' '.join(str(e) for e in language.to_list())
+
+def split_scale(df):
+
+    """ 
+    Purpose:
+        
+    ---
+    Parameters:
+        
+    ---
+    Returns:
+        X_train, y_train, X_validate, y_validate, X_test, y_test: data subsets
+    """
+
+    scaler = preprocessing.MinMaxScaler()
+    scaler.fit_transform(df[['word_count']])
+
+    train_validate, test = train_test_split(df, test_size=.3, random_state=514, stratify=df['language'])
+    train, validate = train_test_split(train_validate, test_size=.3, random_state=514, stratify=train_validate['language'])
+
+    # split data into Big X, small y sets 
+    X_train = train.drop(columns=['language'])
+    y_train = train.language
+
+    X_validate = validate.drop(columns=['language'])
+    y_validate = validate.language
+
+    X_test = test.drop(columns=['language'])
+    y_test = test.language
+
+    return train, X_train, y_train, X_validate, y_validate, X_test, y_test
+
+def vectorize(df):
+
+    tfidf = TfidfVectorizer()
+    df['lemmatized'] = tfidf.fit_transform(df.lemmatized).todense()
+    df['language_bigrams'] = tfidf.fit_transform(df.language_bigrams).todense()
+
+    return df
+    
