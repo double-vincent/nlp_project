@@ -403,10 +403,10 @@ def clean(text, extra_words=None, exclude_words=None):
 
 def flatten_languages(language):
 
-    keepers = ['Python', 'R', 'JavaScript', 'Jupyter Notebook', 'HTML']
+    keepers = ['Python', 'R', 'JavaScript', 'HTML']
     
     if language not in keepers:
-        language = 'Other'
+        language = 'other'
 
     return language
 
@@ -435,6 +435,7 @@ def prep_text(df):
     df['lemmatized'] = df.clean.apply(lemmatize)
 
     df = df[['language', 'lemmatized']]
+    df = df.replace("'", '', regex=True)
     for i in df.index:
         df.loc[i, 'word_count'] = len([word for word in df.loc[i, 'lemmatized'].split()])
 
