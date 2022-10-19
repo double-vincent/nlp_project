@@ -15,7 +15,7 @@ by: Vincent Banuelos and J. Vincent Shorter-Ivey
 ___
 
 ## <a name="project_description_goals"></a>Project Description/Goals:
-- Using both basic stats and advanced stats can I predict a github repositories programming langauge based on the repositories README file.
+- Using both basic stats and advanced stats can we predict a github repositories programming langauge based on the repositories README file.
 
 - This project runs through the entire Data Science Pipeline and culminates with classification modelling techniques based upon Natural Langauge Processing outcomes.
 
