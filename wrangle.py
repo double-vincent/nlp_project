@@ -1,4 +1,4 @@
-ffrom requests import get
+from requests import get
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
@@ -30,310 +30,241 @@ def get_search_csv():
         return pd.read_csv(file)
                 
     else:
-    
+        good_urls = ['https://github.com/homerchen19/nba-go',
+        'https://github.com/hegaojian/JetpackMvvm',
+        'https://github.com/naoyashiga/Dunk',
+        'https://github.com/chonyy/AI-basketball-analysis',
+        'https://github.com/hegaojian/WanAndroid',
+        'https://github.com/bttmly/nba',
+        'https://github.com/smuyyh/SprintNBA',
+        'https://github.com/linouk23/NBA-Player-Movements',
+        'https://github.com/FaridSafi/react-native-basketball',
+        'https://github.com/TryKickoff/kickoff',
+        'https://github.com/kshvmdn/nba.js',
+        'https://github.com/jaebradley/basketball_reference_web_scraper',
+        'https://github.com/cwendt94/espn-api',
+        'https://github.com/hegaojian/MvvmHelper',
+        'https://github.com/zengm-games/zengm',
+        'https://github.com/jrbadiabo/Bet-on-Sibyl',
+        'https://github.com/stephanj/basketballVideoAnalysis',
+        'https://github.com/KengoA/fantasy-basketball',
+        'https://github.com/vishaalagartha/basketball_reference_scraper',
+        'https://github.com/xwjdsh/nba-live',
+        'https://github.com/neeilan/DeepPlayByPlay',
+        'https://github.com/lbenz730/ncaahoopR',
+        'https://github.com/RobRomijnders/RNN_basketball',
+        'https://github.com/andrewgiessel/basketballcrawler',
+        'https://github.com/danchyy/Basketball_Analytics',
+        'https://github.com/jbkuczma/NBAreact',
+        'https://github.com/rajshah4/NBA_SportVu',
+        'https://github.com/gmf05/nba',
+        'https://github.com/alexmonti19/dagnet',
+        'https://github.com/historicalsource/nba-jam',
+        'https://github.com/browlm13/Basketball-Shot-Detection',
+        'https://github.com/andrewstellman/pbprdf',
+        'https://github.com/adeshpande3/March-Madness-2017',
+        'https://github.com/octonion/basketball',
+        'https://github.com/skekre98/NBA-Search',
+        'https://github.com/chonyy/basketball-shot-detection',
+        'https://github.com/virajsanghvi/d3.basketball-shot-chart',
+        'https://github.com/OwlTing/AI_basketball_games_video_editor',
+        'https://github.com/jflancer/bigballR',
+        'https://github.com/evansloan/sports.py',
+        'https://github.com/dtarlow/Machine-March-Madness',
+        'https://github.com/chychen/BasketballGAN',
+        'https://github.com/skakac/2d-basketball-unity3d',
+        'https://github.com/VamshiIITBHU14/BasketBallARKit',
+        'https://github.com/AdaRoseCannon/basketball-demo',
+        'https://github.com/lbenz730/NCAA_Hoops',
+        'https://github.com/sportsdataverse/hoopR',
+        'https://github.com/rtelmore/ballr',
+        'https://github.com/lbenz730/NCAA_Hoops_Play_By_Play',
+        'https://github.com/rodzam/ncaab-stats-scraper',
+        'https://github.com/aoru45/LFFD-Pytorch',
+        'https://github.com/octonion/basketball-m',
+        'https://github.com/wcrasta/ESPN-Fantasy-Basketball',
+        'https://github.com/srlesrle/betting',
+        'https://github.com/kjaisingh/march-madness-2019',
+        'https://github.com/ayushpai/Basketball-Detector',
+        'https://github.com/BonbonLemon/basketball',
+        'https://github.com/arbues6/BueStats',
+        'https://github.com/leerichardson/game_simulation',
+        'https://github.com/zachwill/ESPN-Basketball',
+        'https://github.com/lujinzhong/Live_basketball_room',
+        'https://github.com/rizkyikhwan/miracle-basketball',
+        'https://github.com/sndmrc/BasketballAnalyzeR',
+        'https://github.com/sportsdataverse/sportsdataverse-js',
+        'https://github.com/solmos/eurolig',
+        'https://github.com/zhaoyu611/basketball_trajectory_prediction',
+        'https://github.com/basketballrelativity/basketball_data_science',
+        'https://github.com/ed-word/Activity-Recognition',
+        'https://github.com/historicalsource/nba-jam-tournament-edition',
+        'https://github.com/mbjoseph/bbr',
+        'https://github.com/owenauch/NBA-Fantasy-Optimizer',
+        'https://github.com/cfahlgren1/Bounce',
+        'https://github.com/JonnyBurger/basketball-tracker',
+        'https://github.com/nguyenank/shot-plotter',
+        'https://github.com/oussamabonnor1/Ball-Fall-game-Unity2D',
+        'https://github.com/llimllib/ncaa-bracket-randomizer',
+        'https://github.com/brettfazio/CVBallTracking',
+        'https://github.com/sunkuo/joi-router',
+        'https://github.com/hubsif/kodi-magentasport',
+        'https://github.com/ngbede/hoop',
+        'https://github.com/liang3472/BasketBall',
+        'https://github.com/rukmal/Scoreboard',
+        'https://github.com/imadmali/bball-hmm',
+        'https://github.com/thunky-monk/kawhi',
+        'https://github.com/EddM/boxscorereplay',
+        'https://github.com/elwan9880/Yahoo_fantasy_basketball_analyzer',
+        'https://github.com/Franpanozzo/nba-api-rest',
+        'https://github.com/arbues6/Euroleague-ML',
+        'https://github.com/minimaxir/ncaa-basketball',
+        'https://github.com/kpascual/basketball-data-scraper',
+        'https://github.com/gabarlacchi/MASK-CNN-for-actions-recognition-',
+        'https://github.com/dsscollection/basketball',
+        'https://github.com/gogonzo/sport',
+        'https://github.com/kgilbert-cmu/basketball-gm',
+        'https://github.com/nlgcat/sport_sett_basketball',
+        'https://github.com/dimgold/Artificial_Curiosity',
+        'https://github.com/JKH-HCA2/BasketballRecLeague',
+        'https://github.com/devinmancuso/nba-start-active-players-bot',
+        'https://github.com/chrisdesilva/pickup',
+        'https://github.com/alfremedpal/PandasBasketball',
+        'https://github.com/chenyukang/Basketball_demo',
+        'https://github.com/gkaramanis/FIBA-Basketbal-World-Cup',
+        'https://github.com/cxong/Dunkman',
+        'https://github.com/dcampuzano101/Hoopr',
+        'https://github.com/thisisevanfox/nba-my-team-ios-widget',
+        'https://github.com/Innocence713/BasketballBoard',
+        'https://github.com/thunderdome-data/ncaa-bracket',
+        'https://github.com/elishayer/mRchmadness',
+        'https://github.com/Asterisk4Magisk/Sing4Magisk',
+        'https://github.com/elizabethsiegle/nba-stats-twilio-sms-bot',
+        'https://github.com/Tanapruk/fb_emoji_basketball',
+        'https://github.com/jbowens/nbagame',
+        'https://github.com/dlm1223/march-madness',
+        'https://github.com/jordanvolz/BasketballStats',
+        'https://github.com/matchvs/BasketBall',
+        'https://github.com/dataprofessor/basketball-heroku',
+        'https://github.com/chonyy/daily-nba',
+        'https://github.com/shermanash/DFSharp',
+        'https://github.com/bziarkowski/euRobasket',
+        'https://github.com/whsky/smarter-than-nate-silver',
+        'https://github.com/embirico/basketball-object-tracker',
+        'https://github.com/louis70109/PLeagueBot',
+        'https://github.com/caravancodes/consumable-code-the-sport-db-api',
+        'https://github.com/Basket-Analytics/BasketTracking',
+        'https://github.com/jtpavlock/nbapy',
+        'https://github.com/donejs/bitballs',
+        'https://github.com/historicalsource/nba-hangtime',
+        'https://github.com/AlexEidt/Basketball-Statistics-Tracking',
+        'https://github.com/acheng1230/Web_Scraping_NBA_Data',
+        'https://github.com/isovector/time2jam',
+        'https://github.com/ddayto21/NBA-Time-Series-Forecasts',
+        'https://github.com/kshvmdn/nba-player-tracker',
+        'https://github.com/nuno-faria/HeadToHead',
+        'https://github.com/jprustv/Basketball-Game',
+        'https://github.com/szacho/basketball-detection',
+        'https://github.com/hinkelman/Shiny-Scorekeeper',
+        'https://github.com/ahnuchen/cxk-basketball',
+        'https://github.com/andreweatherman/toRvik',
+        'https://github.com/berrysauce/basketball',
+        'https://github.com/aistairc/rotowire-modified',
+        'https://github.com/SravB/NBA-Predictive-Analytics',
+        'https://github.com/solmos/rfeb',
+        'https://github.com/jharrilim/balldontlie-client',
+        'https://github.com/LightBuzz/Kinect-Basketball-Spinner',
+        'https://github.com/ramvibhakar/basketball-analytics',
+        'https://github.com/jbrudvik/yahoo-fantasy-basketball',
+        'https://github.com/dhatch/schneiderman',
+        'https://github.com/hkair/Basketball-Action-Recognition',
+        'https://github.com/3DSage/GBA-Audio-Basketball-Game',
+        'https://github.com/My-Machine-Learning-Projects-CT/College-Basketball-Final-Four-Prediction',
+        'https://github.com/arnav-kr/BasketBall',
+        'https://github.com/Tw1ddle/samcodes-gamecircle',
+        'https://github.com/scottwillson/play-by-play',
+        'https://github.com/Ed-Zh/Basketball-Analytics',
+        'https://github.com/jnebrera/Amateur_Basketball_Broadcasting',
+        'https://github.com/yankovai/College-Basketball-Prediction',
+        'https://github.com/michael-langaman/fntsylu',
+        'https://github.com/magnusbakken/espn-fantasy-autopick',
+        'https://github.com/kurtawirth/ncaahoopsscraper',
+        'https://github.com/djblechn-su/nba-player-team-ids',
+        'https://github.com/JackLich10/gamezoneR',
+        'https://github.com/DavidNester/SportStreamer',
+        'https://github.com/TaniaFontcuberta/Android-Basketball',
+        'https://github.com/JonJonHuang/Hoops',
+        'https://github.com/Esedicol/BasketballPlayerDetectection-BABPD',
+        'https://github.com/DevEMCN/Kinect-Unity-Basketball',
+        'https://github.com/myblackbeard/basketball-betting-bot',
+        'https://github.com/seankross/bracketology',
+        'https://github.com/koki25ando/NBAloveR',
+        'https://github.com/lilleswing/March-Madness',
+        'https://github.com/nwpu-basketball-robot/vision',
+        'https://github.com/MojoJolo/fb_basketball',
+        'https://github.com/EsmaShr/Ansong-Basketball',
+        'https://github.com/Yao-Shao/Basketball-Game-Goal-Detector',
+        'https://github.com/domkia/android-basketball-game',
+        'https://github.com/johnsylvain/cbb',
+        'https://github.com/christopherjenness/Similar-Shooter',
+        'https://github.com/snestler/wncaahoopR',
+        'https://github.com/uom-android-team2/WeBall_Statistics-Backend',
+        'https://github.com/uom-android-team2/WeBall_Statistics',
+        'https://github.com/timdagostino/NCAAsimulator',
+        'https://github.com/rlabausa/nba-schedule-data',
+        'https://github.com/yichenzhu1337/justplay',
+        'https://github.com/sportsdataverse/wehoop',
+        'https://github.com/kpelechrinis/adjusted_plusminus',
+        'https://github.com/hqadeer/nba_scrape',
+        'https://github.com/DeepSportRadar/player-reidentification-challenge',
+        'https://github.com/HeroChan0330/Play-Video-With-Stm32',
+        'https://github.com/treelover28/nbaMatchPredictor_PROTOTYPE',
+        'https://github.com/nicidob/bbgm',
+        'https://github.com/AlvinJiaozhu/Linear-Regression-Model-Basketball']
 
-        # TODO: Make a github personal access token.
-        #     1. Go here and generate a personal access token: https://github.com/settings/tokens
-        #        You do _not_ need select any scopes, i.e. leave all the checkboxes unchecked
-        #     2. Save it in your env.py file under the variable `github_token`
-        # TODO: Add your github username to your env.py file under the variable `github_username`
-        # TODO: Add more repositories to the `REPOS` list below.
-
-        REPOS = ['homerchen19/nba-go',
-        'hegaojian/JetpackMvvm',
-        'naoyashiga/Dunk',
-        'chonyy/AI-basketball-analysis',
-        'hegaojian/WanAndroid',
-        'bttmly/nba',
-        'smuyyh/SprintNBA',
-        'linouk23/NBA-Player-Movements',
-        'FaridSafi/react-native-basketball',
-        'TryKickoff/kickoff',
-        'kshvmdn/nba.js',
-        'jaebradley/basketball_reference_web_scraper',
-        'cwendt94/espn-api',
-        'hegaojian/MvvmHelper',
-        'zengm-games/zengm',
-        'jrbadiabo/Bet-on-Sibyl',
-        'stephanj/basketballVideoAnalysis',
-        'KengoA/fantasy-basketball',
-        'vishaalagartha/basketball_reference_scraper',
-        'neilmj/BasketballData',
-        'xwjdsh/nba-live',
-        'neeilan/DeepPlayByPlay',
-        'lbenz730/ncaahoopR',
-        'RobRomijnders/RNN_basketball',
-        'andrewgiessel/basketballcrawler',
-        'simonefrancia/SpaceJam',
-        'danchyy/Basketball_Analytics',
-        'alexnoob/BasketBall-GM-Rosters',
-        'jbkuczma/NBAreact',
-        'FranGoitia/basketball_reference',
-        'rajshah4/NBA_SportVu',
-        'gmf05/nba',
-        'FranGoitia/basketball-analytics',
-        'alexmonti19/dagnet',
-        'historicalsource/nba-jam',
-        'browlm13/Basketball-Shot-Detection',
-        'andrewstellman/pbprdf',
-        'adeshpande3/March-Madness-2017',
-        'octonion/basketball',
-        'skekre98/NBA-Search',
-        'chonyy/basketball-shot-detection',
-        'virajsanghvi/d3.basketball-shot-chart',
-        'OwlTing/AI_basketball_games_video_editor',
-        'jflancer/bigballR',
-        'evansloan/sports.py',
-        'dtarlow/Machine-March-Madness',
-        'chychen/BasketballGAN',
-        'skakac/2d-basketball-unity3d',
-        'VamshiIITBHU14/BasketBallARKit',
-        'AdaRoseCannon/basketball-demo',
-        'lbenz730/NCAA_Hoops',
-        'sportsdataverse/hoopR',
-        'rtelmore/ballr',
-        'lbenz730/NCAA_Hoops_Play_By_Play',
-        'rodzam/ncaab-stats-scraper',
-        'aoru45/LFFD-Pytorch',
-        'octonion/basketball-m',
-        'wcrasta/ESPN-Fantasy-Basketball',
-        'srlesrle/betting','kjaisingh/march-madness-2019',
-        'ayushpai/Basketball-Detector',
-        'BonbonLemon/basketball',
-        'arbues6/BueStats',
-        'fivethirtyeight/nba-player-advanced-metrics',
-        'leerichardson/game_simulation',
-        'zachwill/ESPN-Basketball',
-        'lujinzhong/Live_basketball_room',
-        'rizkyikhwan/miracle-basketball',
-        'sndmrc/BasketballAnalyzeR',
-        'sportsdataverse/sportsdataverse-js',
-        'solmos/eurolig',
-        'zhaoyu611/basketball_trajectory_prediction',
-        'basketballrelativity/basketball_data_science',
-        'ed-word/Activity-Recognition',
-        'historicalsource/nba-jam-tournament-edition',
-        'mbjoseph/bbr',
-        'owenauch/NBA-Fantasy-Optimizer',
-        'cfahlgren1/Bounce',
-        'JonnyBurger/basketball-tracker',
-        'nguyenank/shot-plotter',
-        'oussamabonnor1/Ball-Fall-game-Unity2D',
-        'llimllib/ncaa-bracket-randomizer',
-        'brettfazio/CVBallTracking',
-        'sunkuo/joi-router',
-        'hubsif/kodi-magentasport',
-        'ngbede/hoop',
-        'liang3472/BasketBall',
-        'rukmal/Scoreboard',
-        'imadmali/bball-hmm',
-        'thunky-monk/kawhi',
-        'EddM/boxscorereplay',
-        'elwan9880/Yahoo_fantasy_basketball_analyzer',
-        'Franpanozzo/nba-api-rest',
-        'arbues6/Euroleague-ML',
-        'minimaxir/ncaa-basketball',
-        'kpascual/basketball-data-scraper',
-        'gabarlacchi/MASK-CNN-for-actions-recognition-',
-        'dsscollection/basketball',
-        'gogonzo/sport',
-        'kgilbert-cmu/basketball-gm',
-        'nlgcat/sport_sett_basketball',
-        'dimgold/Artificial_Curiosity',
-        'JKH-HCA2/BasketballRecLeague',
-        'devinmancuso/nba-start-active-players-bot',
-        'cryptopunksnotdead/punks.bodies',
-        'tutsplus/BasketballFreeThrowUnity',
-        'chrisdesilva/pickup',
-        'alfremedpal/PandasBasketball',
-        'chenyukang/Basketball_demo',
-        'gkaramanis/FIBA-Basketbal-World-Cup',
-        'cxong/Dunkman',
-        'dcampuzano101/Hoopr',
-        'thisisevanfox/nba-my-team-ios-widget',
-        'Innocence713/BasketballBoard',
-        'thunderdome-data/ncaa-bracket',
-        'elishayer/mRchmadness',
-        'Asterisk4Magisk/Sing4Magisk',
-        'elizabethsiegle/nba-stats-twilio-sms-bot',
-        'Tanapruk/fb_emoji_basketball',
-        'jbowens/nbagame',
-        'EvanZ/bayesian-win-probability',
-        'dlm1223/march-madness',
-        'jordanvolz/BasketballStats',
-        'matchvs/BasketBall',
-        'WolverineSportsAnalytics/basketball',
-        'dataprofessor/basketball-heroku',
-        'chonyy/daily-nba',
-        'shermanash/DFSharp',
-        'bziarkowski/euRobasket',
-        'whsky/smarter-than-nate-silver',
-        'danielforsyth/NBA-SportsVU',
-        'embirico/basketball-object-tracker',
-        'louis70109/PLeagueBot',
-        'caravancodes/consumable-code-the-sport-db-api',
-        'Basket-Analytics/BasketTracking',
-        'jtpavlock/nbapy',
-        'donejs/bitballs',
-        'historicalsource/nba-hangtime',
-        'AlexEidt/Basketball-Statistics-Tracking',
-        'msmykowski/basketball-game-matter.js',
-        'acheng1230/Web_Scraping_NBA_Data',
-        'isovector/time2jam',
-        'ddayto21/NBA-Time-Series-Forecasts',
-        'kshvmdn/nba-player-tracker',
-        'nuno-faria/HeadToHead',
-        'jprustv/Basketball-Game',
-        'szacho/basketball-detection',
-        'hinkelman/Shiny-Scorekeeper',
-        'ahnuchen/cxk-basketball',
-        'andreweatherman/toRvik',
-        'berrysauce/basketball',
-        'aistairc/rotowire-modified',
-        'SravB/NBA-Predictive-Analytics',
-        'rintaromasuda/bleaguer',
-        'solmos/rfeb',
-        'jharrilim/balldontlie-client',
-        'LightBuzz/Kinect-Basketball-Spinner',
-        'ramvibhakar/basketball-analytics',
-        'jbrudvik/yahoo-fantasy-basketball',
-        'dhatch/schneiderman',
-        'hkair/Basketball-Action-Recognition',
-        '3DSage/GBA-Audio-Basketball-Game',
-        'My-Machine-Learning-Projects-CT/College-Basketball-Final-Four-Prediction',
-        'arnav-kr/BasketBall',
-        'Tw1ddle/samcodes-gamecircle',
-        'scottwillson/play-by-play',
-        'Ed-Zh/Basketball-Analytics',
-        'jnebrera/Amateur_Basketball_Broadcasting',
-        'yankovai/College-Basketball-Prediction',
-        'michael-langaman/fntsylu',
-        'magnusbakken/espn-fantasy-autopick',
-        'kurtawirth/ncaahoopsscraper',
-        'djblechn-su/nba-player-team-ids',
-        'JackLich10/gamezoneR',
-        'DavidNester/SportStreamer',
-        'TaniaFontcuberta/Android-Basketball',
-        'JonJonHuang/Hoops',
-        'Esedicol/BasketballPlayerDetectection-BABPD',
-        'DevEMCN/Kinect-Unity-Basketball',
-        'lvh1g15/ARKit-BasketBall-Shoot',
-        'myblackbeard/basketball-betting-bot',
-        'seankross/bracketology',
-        'koki25ando/NBAloveR',
-        'lilleswing/March-Madness',
-        'nwpu-basketball-robot/vision',
-        'MojoJolo/fb_basketball',
-        'yagmurdogan8/Basketball_Team',
-        'EsmaShr/Ansong-Basketball',
-        'Yao-Shao/Basketball-Game-Goal-Detector',
-        'domkia/android-basketball-game',
-        'johnsylvain/cbb',
-        'christopherjenness/Similar-Shooter',
-        'snestler/wncaahoopR',
-        'gbrunner/court-js',
-        'uom-android-team2/WeBall_Statistics-Backend',
-        'uom-android-team2/WeBall_Statistics',
-        'timdagostino/NCAAsimulator',
-        'rlabausa/nba-schedule-data',
-        'yichenzhu1337/justplay',
-        'sportsdataverse/wehoop',
-        'kpelechrinis/adjusted_plusminus',
-        'hqadeer/nba_scrape',
-        'DeepSportRadar/player-reidentification-challenge',
-        'gbrunner/Courtside-Geography',
-        'HeroChan0330/Play-Video-With-Stm32',
-        'treelover28/nbaMatchPredictor_PROTOTYPE',
-        'nicidob/bbgm',
-        'fuzzthink/basketball-public',
-        'AlvinJiaozhu/Linear-Regression-Model-Basketball']
-
-        headers = {"Authorization": f"token {github_token}", "User-Agent": github_username}
-
-        if headers["Authorization"] == "token " or headers["User-Agent"] == "":
-            raise Exception(
-                "You need to follow the instructions marked TODO in this script before trying to use it"
-            )
-
-
-        def github_api_request(url: str) -> Union[List, Dict]:
-            response = requests.get(url, headers=headers)
-            response_data = response.json()
-            if response.status_code != 200:
-                raise Exception(
-                    f"Error response from github api! status code: {response.status_code}, "
-                    f"response: {json.dumps(response_data)}"
-                )
-            return response_data
-
-
-        def get_repo_language(repo: str) -> str:
-            url = f"https://api.github.com/repos/{repo}"
-            repo_info = github_api_request(url)
-            if type(repo_info) is dict:
-                repo_info = cast(Dict, repo_info)
-                if "language" not in repo_info:
-                    raise Exception(
-                        "'language' key not round in response\n{}".format(json.dumps(repo_info))
-                    )
-                return repo_info["language"]
-            raise Exception(
-                f"Expecting a dictionary response from {url}, instead got {json.dumps(repo_info)}"
-            )
-
-
-        def get_repo_contents(repo: str) -> List[Dict[str, str]]:
-            url = f"https://api.github.com/repos/{repo}/contents/"
-            contents = github_api_request(url)
-            if type(contents) is list:
-                contents = cast(List, contents)
-                return contents
-            raise Exception(
-                f"Expecting a list response from {url}, instead got {json.dumps(contents)}"
-            )
-
-
-        def get_readme_download_url(files: List[Dict[str, str]]) -> str:
-            """
-            Takes in a response from the github api that lists the files in a repo and
-            returns the url that can be used to download the repo's README file.
-            """
-            for file in files:
-                if file["name"].lower().startswith("readme"):
-                    return file["download_url"]
-            return ""
-
-
-        def process_repo(repo: str) -> Dict[str, str]:
-            """
-            Takes a repo name like "gocodeup/codeup-setup-script" and returns a
-            dictionary with the language of the repo and the readme contents.
-            """
-            contents = get_repo_contents(repo)
-            readme_download_url = get_readme_download_url(contents)
-            if readme_download_url == "":
-                readme_contents = ""
-            else:
-                readme_contents = requests.get(readme_download_url).text
-            return {
-                "repo": repo,
-                "language": get_repo_language(repo),
-                "readme_contents": readme_contents,
-            }
-
-
-        def scrape_github_data() -> List[Dict[str, str]]:
-            """
-            Loop through all of the repos and process them. Returns the processed data.
-            """
-            return [process_repo(repo) for repo in REPOS]
-
-
-        if __name__ == "__main__":
-            data = scrape_github_data()
-            json.dump(data, open("data.json", "w"), indent=1)
+    #Create a function to collect the information and cache it as a json file
+    def get_readme():
+        file = 'readme_s.json'
         
-    df = pd.DataFrame.from_dict(data)
+        if os.path.exists(file):
+            
+            with open(file) as f:
+            
+                return json.load(f)
+            
+        github_info = []
+
+        for link in url_list:
+                
+            github_dict = {}
+            
+            response = get(link)
+
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            github_dict['readme_txt'] = soup.find('div', id='readme').text
+            
+            list = []
+            lang = soup.find_all('span', class_='color-fg-default text-bold mr-1')
+            for i in lang:
+                list.append(i.text)
+
+            if list[0] == 'Jupyter Notebook':
+                github_dict['language'] = "Python"
+            
+            else:
+                github_dict['language'] = list[0]
+            
+            github_info.append(github_dict)
+
+            with open(file, 'w') as f:
+            
+                json.dump(github_info, f)
+            
+        return github_info
+    
+    github_info = get_readme(good_urls)
+    df = pd.DataFrame.from_dict(github_info)
     df.to_csv('search_results.csv')
     df = pd.read_csv('search_results.csv')
     
@@ -491,11 +422,10 @@ def prep_text(df):
     
     """
     
-    df.rename(columns= {'readme_contents' : 'readme_txt'}, inplace=True)
     df['readme_txt'] = df['readme_txt'].str.replace(r'<[^<>]*>', '', regex=True)
 
     df = df.dropna() 
-    df = df.drop([1, 4, 6, 13, 20, 66, 86, 113, 123, 184, 204])
+    df.drop([1, 4, 6, 13, 19, 60, 80, 105, 114, 136, 170, 187],inplace=True)
     df = df.drop(columns='Unnamed: 0')
     
     df.language = df.language.apply(flatten_languages)
