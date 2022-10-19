@@ -440,3 +440,41 @@ def prep_text(df):
         df.loc[i, 'word_count'] = len([word for word in df.loc[i, 'lemmatized'].split()])
 
     return df
+
+#created class in order to facilitate bigram and trigram creation
+class code_language:
+  def __init__(self, words, label:str):
+    self.words = words
+    self.label = label
+    self.unique_to_language = set()
+
+  def whole_words(self): 
+    return pd.Series(self.words.split())
+
+  def word_counts(self):
+    return pd.Series(self.words.split()).value_counts()
+
+  def unique_words(self):
+    return set(pd.Series(self.whole_words().unique()))
+
+  def bigrams(self):
+    return pd.Series(list(nltk.bigrams(self.words.split())))
+
+  def trigrams(self):
+    return pd.Series(list(nltk.ngrams(self.words.split(), 3)))
+
+  def readme_count(self):
+    return df[df.language == self.label].word_count.count()
+
+def bigram_placement(language):
+    if language == 'html':
+        language = html.bigrams()
+    elif language == 'javascript':
+        language = javascript.bigrams()
+    elif language == 'r':
+        language = r_.bigrams()
+    elif language == 'python':
+        language = python_.bigrams()
+    else:
+        language = other_.bigrams()
+    return ' '.join(str(e) for e in language.to_list())
