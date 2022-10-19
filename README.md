@@ -19,6 +19,8 @@ ___
 
 - This project runs through the entire Data Science Pipeline and culminates with classification modelling techniques based upon Natural Langauge Processing outcomes.
 
+- Utilizes the Top 1
+
 [[Back to top](#top)]
 
 
