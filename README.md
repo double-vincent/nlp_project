@@ -5,6 +5,7 @@ by: Vincent Banuelos and J. Vincent Shorter-Ivey
 
 ***
 [[Project Description/Goals](#project_description_goals)]
+[[Executive Sumary](#exec_summ)]
 [[Initial Questions](#initial_questions)]
 [[Planning](#planning)]
 [[Data Dictionary](#dictionary)]
@@ -20,6 +21,15 @@ ___
 - This project runs through the entire Data Science Pipeline and culminates with classification modelling techniques based upon Natural Langauge Processing outcomes.
 
 - Utilizes the Top 1
+
+[[Back to top](#top)]
+
+## <a name="exec_summ"></a>Executive Summary:
+- Analysis of the data showed that Python was by far the most popular language
+
+- Python was the most popular language used.
+
+- Creation of bigrams was a huge help to modeling process.
 
 [[Back to top](#top)]
 
